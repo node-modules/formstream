@@ -1,0 +1,36 @@
+{
+  "name": "formstream",
+  "version": "0.0.1",
+  "description": "A multipart/form-data encoded stream, helper for file upload.",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fengmk2/formstream.git"
+  },
+  "keywords": [
+    "form",
+    "stream",
+    "multipart",
+    "form-data",
+    "upload",
+    "postfile",
+    "request"
+  ],
+  "devDependencies": {
+    "should": "*",
+    "mocha": "*"
+  },
+  "dependencies": {
+    "mime": "1.2.7",
+    "pause-stream": "0.0.5"
+  },
+  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
+  "license": "MIT"
+}

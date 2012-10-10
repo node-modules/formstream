@@ -1,0 +1,1 @@
+module.exports = process.env.FORMSTREAM_COV ? require('./lib-cov/formstream') : require('./lib/formstream');
