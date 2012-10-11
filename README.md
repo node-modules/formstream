@@ -3,10 +3,9 @@ formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)
 
 ![logo](https://raw.github.com/fengmk2/formstream/master/logo.png)
 
-A multipart/form-data encoded stream, helper for file upload.
+A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, helper for file upload.
 
-jscoverage: [-%](http://fengmk2.github.com/coverage/formstream.html)
-
+jscoverage: [100%](http://fengmk2.github.com/coverage/formstream.html)
 
 ## Install
 
@@ -20,10 +19,19 @@ $ npm install formstream
 var formstream = require('formstream');
 var http = require('http');
 
-var req = http.get('http://nodejs.org', function (res) {
-  res.on('data', function (chunk) {
-    console.log(charset(res.headers, chunk));
-    res.destroy();
+var form = formstream();
+form.file('file', './logo.png');
+
+var options = {
+  method: 'POST',
+  host: 'upload.cnodejs.net',
+  path: '/store',
+  headers: form.headers()
+};
+var req = http.request(options, function (res) {
+  console.log('Status: %s', res.statusCode);
+  res.on('data', function (data) {
+    console.log(data.toString());
   });
 });
 

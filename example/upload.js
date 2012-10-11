@@ -18,16 +18,18 @@ var path = require('path');
 var filepath = __filename;
 var imagepath = path.join(path.dirname(__dirname), 'logo.png');
 
-var form = formstream.create();
-form.file('file', filepath);
-form.stream('image', fs.createReadStream(imagepath));
+var form = formstream();
+// form.file('file', filepath);
+form.stream('file', fs.createReadStream(imagepath), 'logo.png');
 form.field('foo', 'hello world');
 
 var req = http.request({
   method: 'POST',
   host: 'upload.cnodejs.net',
+  // host: '127.0.0.1',
+  // port: 8081,
   path: '/store',
-  headers: form.getHeaders()
+  headers: form.headers()
 });
 req.on('response', function (res) {
   console.log(res.statusCode, res.headers);
