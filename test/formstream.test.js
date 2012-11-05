@@ -10,12 +10,16 @@
  * Module dependencies.
  */
 
+var pedding = require('pedding');
 var formstream = require('../');
 var Stream = require('stream');
 var http = require('http');
 var fs = require('fs');
+var path = require('path');
 var should = require('should');
 
+
+var root = path.dirname(__dirname);
 var app = require('./fixtures/server');
 
 function cunterStream(name, count) {
@@ -52,11 +56,18 @@ function post(port, url, form, callback) {
     });
     res.on('end', function () {
       var data = Buffer.concat(chunks);
-      data = JSON.parse(data);
-      callback(null, data);
+      var err = null;
+      try {
+        data = JSON.parse(data);
+      } catch (e) {
+        err = e;
+        err.data = data.toString();
+      }
+      callback(err, data);
     });
   });
   form.pipe(req);
+  req.on('error', callback);
 }
 
 describe('formstream.test.js', function () {
@@ -80,8 +91,29 @@ describe('formstream.test.js', function () {
         name: '中文名字',
         pwd: '哈哈pwd'
       });
+      data.headers.should.not.have.property('content-length');
       data.headers.should.have.property('content-type')
-        .with.match(/multipart\/form-data; boundary=--------------------------\d{24}/);
+        .with.equal('multipart/form-data; boundary=' + form._boundary);
+      data.files.should.eql({});
+      done(err);
+    });
+  });
+
+  it('should post fields only with content-length', function (done) {
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.field('name', '中文名字');
+    form.field('pwd', '哈哈pwd');
+    form.setTotalStreamSize(0);
+    post(port, '/post', form, function (err, data) {
+      data.body.should.eql({
+        foo: 'bar',
+        name: '中文名字',
+        pwd: '哈哈pwd'
+      });
+      data.headers.should.have.property('content-length', String(form._contentLength));
+      data.headers.should.have.property('content-type')
+        .with.equal('multipart/form-data; boundary=' + form._boundary);
       data.files.should.eql({});
       done(err);
     });
@@ -99,14 +131,56 @@ describe('formstream.test.js', function () {
         name: '中文名字',
         pwd: '哈哈pwd'
       });
+      data.headers.should.not.have.property('content-length');
       data.headers.should.have.property('content-type')
-        .with.match(/multipart\/form-data; boundary=--------------------------\d{24}/);
+        .with.equal('multipart/form-data; boundary=' + form._boundary);
       var files = data.files;
       files.should.have.property('file');
       files.file.filename.should.equal('formstream.test.js');
       files.file.size.should.equal(fs.statSync(__filename).size);
       files.file.mime.should.equal('application/javascript');
       done(err);
+    });
+  });
+
+  it('should post fields and file with content-length', function (done) {
+    fs.stat(__filename, function (err, stat) {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.field('name', '中文名字');
+      form.field('pwd', '哈哈pwd');
+      form.file('file', __filename);
+      form.setTotalStreamSize(stat.size);
+      post(port, '/post', form, function (err, data) {
+        data.body.should.eql({
+          foo: 'bar',
+          name: '中文名字',
+          pwd: '哈哈pwd'
+        });
+        data.headers.should.have.property('content-length').with.equal(String(form._contentLength));
+        data.headers.should.have.property('content-type')
+          .with.equal('multipart/form-data; boundary=' + form._boundary);
+        var files = data.files;
+        files.should.have.property('file');
+        files.file.filename.should.equal('formstream.test.js');
+        files.file.size.should.equal(fs.statSync(__filename).size);
+        files.file.mime.should.equal('application/javascript');
+        done(err);
+      });
+    });
+  });
+
+  it('should post fields and file with wrong stream size will return error',
+  function (done) {
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.field('name', '中文名字');
+    form.field('pwd', '哈哈pwd');
+    form.file('file', __filename);
+    form.setTotalStreamSize(100);
+    post(port, '/post', form, function (err, data) {
+      should.exist(err);
+      done();
     });
   });
 
@@ -155,7 +229,7 @@ describe('formstream.test.js', function () {
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename);
-    form.file('logo', __dirname + '/../logo.png');
+    form.file('logo', path.join(root, 'logo.png'));
     post(port, '/post', form, function (err, data) {
       data.body.should.eql({
         foo: 'bar',
@@ -173,6 +247,45 @@ describe('formstream.test.js', function () {
     });
   });
 
+  it('should post fields, 2 file with content-length', function (done) {
+    var size = 0;
+    var ready = function () {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.field('name', '中文名字');
+      form.field('pwd', '哈哈pwd');
+      form.file('file', __filename);
+      form.file('logo', path.join(root, 'logo.png'));
+      form.setTotalStreamSize(size);
+      post(port, '/post', form, function (err, data) {
+        data.body.should.eql({
+          foo: 'bar',
+          name: '中文名字',
+          pwd: '哈哈pwd'
+        });
+        data.headers.should.have.property('content-length').with.equal(form._contentLength + '');
+        data.headers.should.have.property('content-type')
+          .with.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/);
+        var files = data.files;
+        files.should.have.keys('file', 'logo');
+        files.file.filename.should.equal('formstream.test.js');
+        files.file.size.should.equal(fs.statSync(__filename).size);
+        files.file.mime.should.equal('application/javascript');
+        done(err);
+      });
+    };
+
+    ready = pedding(2, ready);
+    fs.stat(__filename, function (err, stat) {
+      size += stat.size;
+      ready();
+    });
+    fs.stat(path.join(root, 'logo.png'), function (err, stat) {
+      size += stat.size;
+      ready();
+    });
+  });
+
   describe('headers()', function () {
     it('should get headers with content-type', function () {
       var form = formstream();
@@ -181,6 +294,18 @@ describe('formstream.test.js', function () {
       headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/)
       headers['X-Test'].should.equal('hello');
     });
+
+    it('should get headers contains content-length after setTotalStreamSize()', function () {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.setTotalStreamSize(10);
+      var headers = form.headers({ 'X-Test': 'hello' });
+      headers.should.have.keys('Content-Type', 'X-Test', 'Content-Length');
+      headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/)
+      headers['X-Test'].should.equal('hello');
+      headers['Content-Length'].should.equal('171');
+    });
+
   });
 
 });
