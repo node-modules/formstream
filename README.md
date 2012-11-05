@@ -40,6 +40,36 @@ var req = http.request(options, function (res) {
 form.pipe(req);
 ```
 
+### `form.setTotalStreamSize(size)`: Upload file with `Content-Length`
+
+If you know the `ReadStream` total size and you must to set `Content-Length`.
+You may want to use `form.setTotalStreamSize(size)`.
+
+```js
+var formstream = require('formstream');
+var http = require('http');
+var fs = require('fs');
+
+fs.stat('./logo.png', function (err, stat) {
+  var form = formstream();
+  form.file('file', './logo.png', 'upload-logo.png');
+  form.setTotalStreamSize(stat.size);
+  var options = {
+    method: 'POST',
+    host: 'upload.cnodejs.net',
+    path: '/store',
+    headers: form.headers()
+  };
+  var req = http.request(options, function (res) {
+    console.log('Status: %s', res.statusCode);
+    res.on('data', function (data) {
+      console.log(data.toString());
+    });
+  });
+  form.pipe(req);
+});
+```
+
 ## License 
 
 (The MIT License)
