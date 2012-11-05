@@ -23,15 +23,17 @@
     "postfile",
     "request"
   ],
-  "devDependencies": {
-    "connect": "2.6.0",
-    "should": "*",
-    "mocha": "*"
-  },
   "dependencies": {
     "mime": "1.2.7",
     "buffer-concat": "0.0.1",
     "pause-stream": "0.0.6"
+  },
+  "devDependencies": {
+    "connect": "*",
+    "should": "*",
+    "pedding": "*",
+    "jscover": "*",
+    "mocha": "*"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
   "license": "MIT"
