@@ -19,7 +19,7 @@ var filepath = __filename;
 var imagepath = path.join(path.dirname(__dirname), 'logo.png');
 
 var form = formstream();
-// form.file('file', filepath);
+// form.file('file', filepath, filename);
 form.stream('file', fs.createReadStream(imagepath), 'logo.png');
 form.field('foo', 'hello world');
 

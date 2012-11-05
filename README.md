@@ -20,7 +20,9 @@ var formstream = require('formstream');
 var http = require('http');
 
 var form = formstream();
-form.file('file', './logo.png');
+// form.file('file', filepath, filename);
+form.file('file', './logo.png', 'upload-logo.png');
+form.field('foo', 'bar');
 
 var options = {
   method: 'POST',
