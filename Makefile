@@ -1,6 +1,7 @@
-TESTS = test/*.js
+TESTS = test/*.test.js
 REPORTER = spec
 TIMEOUT = 10000
+JSCOVERAGE = ./node_modules/jscover/bin/jscover
 
 test:
 	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
@@ -8,13 +9,12 @@ test:
 		--timeout $(TIMEOUT) \
 		$(TESTS)
 
-test-cov:
-	@rm -rf ./lib-cov
-	@$(MAKE) lib-cov
-	@FORMSTREAM_COV=1 $(MAKE) test
+test-cov: lib-cov
+	@FORMSTREAM_COV=1 $(MAKE) test REPORTER=dot
 	@FORMSTREAM_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
 
 lib-cov:
-	@jscoverage lib $@
+	@rm -rf $@
+	@$(JSCOVERAGE) lib $@
 
 .PHONY: test-cov test lib-cov
