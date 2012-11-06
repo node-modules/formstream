@@ -1,4 +1,10 @@
 
+0.0.4 / 2012-11-06 
+==================
+
+  * fixed #2 support form.buffer()
+  * add doc for setTotalStreamSize()
+
 0.0.3 / 2012-11-06 
 ==================
 
