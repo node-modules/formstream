@@ -20,9 +20,17 @@ var formstream = require('formstream');
 var http = require('http');
 
 var form = formstream();
+
 // form.file('file', filepath, filename);
 form.file('file', './logo.png', 'upload-logo.png');
-form.field('foo', 'bar');
+
+// other form fields
+form.field('foo', 'fengmk2');
+form.field('love', 'aerdeng');
+
+// even send file content buffer directly
+// form.buffer(name, buffer, filename, mimeType)
+form.buffer('file2', new Buffer('This is file2 content.'), 'foo.txt');
 
 var options = {
   method: 'POST',

@@ -286,6 +286,76 @@ describe('formstream.test.js', function () {
     });
   });
 
+  describe('buffer()', function () {
+    it('should post file content buffer', function (done) {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.field('name', '中文名字');
+      form.field('pwd', '哈哈pwd');
+      var buffer = new Buffer('foo content');
+      form.buffer('file', buffer, 'foo.txt');
+      var bar = new Buffer('bar content中文');
+      form.buffer('bar', bar, 'bar.js');
+      var logopath = path.join(root, 'logo.png');
+      form.file('logo', logopath);
+      post(port, '/post', form, function (err, data) {
+        data.body.should.eql({
+          foo: 'bar',
+          name: '中文名字',
+          pwd: '哈哈pwd'
+        });
+        data.headers.should.have.property('content-type')
+          .with.equal('multipart/form-data; boundary=' + form._boundary);
+        var files = data.files;
+        files.should.have.keys('file', 'logo', 'bar');
+        files.file.filename.should.equal('foo.txt');
+        files.file.size.should.equal(buffer.length);
+        files.file.mime.should.equal('text/plain');
+
+        files.bar.filename.should.equal('bar.js');
+        files.bar.size.should.equal(bar.length);
+        files.bar.mime.should.equal('application/javascript');
+        fs.readFileSync(files.bar.path, 'utf8').should.equal('bar content中文');
+        
+        files.logo.filename.should.equal('logo.png');
+        files.logo.size.should.equal(fs.statSync(logopath).size)
+        files.logo.mime.should.equal('image/png');
+        done(err);
+      });
+    });
+
+    it('should post file content buffer with content-length', function (done) {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.field('name', '中文名字');
+      form.field('pwd', '哈哈pwd');
+      var buffer = new Buffer('file content');
+      form.buffer('file', buffer, 'foo.txt');
+      var logopath = path.join(root, 'logo.png');
+      form.file('logo', logopath);
+      form.setTotalStreamSize(fs.statSync(logopath).size);
+      post(port, '/post', form, function (err, data) {
+        data.body.should.eql({
+          foo: 'bar',
+          name: '中文名字',
+          pwd: '哈哈pwd'
+        });
+        data.headers.should.have.property('content-type')
+          .with.equal('multipart/form-data; boundary=' + form._boundary);
+        var files = data.files;
+        files.should.have.keys('file', 'logo');
+        files.file.filename.should.equal('foo.txt');
+        files.file.size.should.equal(buffer.length);
+        files.file.mime.should.equal('text/plain');
+        
+        files.logo.filename.should.equal('logo.png');
+        files.logo.size.should.equal(fs.statSync(logopath).size)
+        files.logo.mime.should.equal('image/png');
+        done(err);
+      });
+    });
+  });
+
   describe('headers()', function () {
     it('should get headers with content-type', function () {
       var form = formstream();
