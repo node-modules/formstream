@@ -68,6 +68,7 @@ function post(port, url, form, callback) {
   });
   form.pipe(req);
   req.on('error', callback);
+  form.on('error', req.emit.bind(req, 'error'));
 }
 
 describe('formstream.test.js', function () {
@@ -170,8 +171,7 @@ describe('formstream.test.js', function () {
     });
   });
 
-  it('should post fields and file with wrong stream size will return error',
-  function (done) {
+  it('should post fields and file with wrong stream size will return error', function (done) {
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
@@ -180,6 +180,21 @@ describe('formstream.test.js', function () {
     form.setTotalStreamSize(100);
     post(port, '/post', form, function (err, data) {
       should.exist(err);
+      done();
+    });
+  });
+
+  it('should post not exist file return error', function (done) {
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.field('name', '中文名字');
+    form.field('pwd', '哈哈pwd');
+    form.file('file', __filename + 'notexists');
+    form.setTotalStreamSize(100);
+    post(port, '/post', form, function (err, data) {
+      should.exist(err);
+      err.message.should.include('formstream/test/formstream.test.jsnotexists');
+      err.message.should.include('ENOENT, open ');
       done();
     });
   });
