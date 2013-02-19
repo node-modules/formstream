@@ -1,4 +1,4 @@
-formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream)
+formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Dependencies](http://david-dm.org/fengmk2/formstream.png)](http://david-dm.org/fengmk2/formstream)
 ==========
 
 ![logo](https://raw.github.com/fengmk2/formstream/master/logo.png)

@@ -24,9 +24,9 @@
     "request"
   ],
   "dependencies": {
-    "mime": "1.2.7",
+    "mime": "1.2.9",
     "buffer-concat": "0.0.1",
-    "pause-stream": "0.0.6"
+    "pause-stream": "0.0.9"
   },
   "devDependencies": {
     "connect": "*",
