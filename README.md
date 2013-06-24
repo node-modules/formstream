@@ -1,11 +1,9 @@
-formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Dependencies](http://david-dm.org/fengmk2/formstream.png)](http://david-dm.org/fengmk2/formstream)
+formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Coverage Status](https://coveralls.io/repos/fengmk2/formstream/badge.png)](https://coveralls.io/r/fengmk2/formstream)
 ==========
 
 ![logo](https://raw.github.com/fengmk2/formstream/master/logo.png)
 
 A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, helper for file upload.
-
-jscoverage: [100%](http://fengmk2.github.com/coverage/formstream.html)
 
 ## Install
 
@@ -82,7 +80,7 @@ fs.stat('./logo.png', function (err, stat) {
 
 (The MIT License)
 
-Copyright (c) 2012 fengmk2 &lt;fengmk2@gmail.com&gt;
+Copyright (c) 2012 - 2013 fengmk2 &lt;fengmk2@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -19,9 +19,9 @@ var app = connect(
     for (var k in req.files) {
       var f = req.files[k];
       files[k] = {
-        size: f.length,
-        mime: f.mime,
-        filename: f.filename,
+        size: f.size || f.length,
+        mime: f.type || f.mime,
+        filename: f.name || f.filename,
         path: f.path
       };
     }

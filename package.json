@@ -3,12 +3,10 @@
   "version": "0.0.5",
   "description": "A multipart/form-data encoded stream, helper for file upload.",
   "main": "index.js",
-  "directories": {
-    "example": "example",
-    "test": "test"
-  },
   "scripts": {
-    "test": "make test"
+    "test": "make test-all",
+    "blanket": { "pattern": "formstream/lib" },
+    "travis-cov": { "threshold": 100 }
   },
   "repository": {
     "type": "git",
@@ -26,13 +24,16 @@
   "dependencies": {
     "mime": "1.2.9",
     "buffer-concat": "0.0.1",
-    "pause-stream": "0.0.9"
+    "pause-stream": ">=0.0.10"
   },
   "devDependencies": {
     "connect": "*",
     "should": "*",
     "pedding": "*",
-    "jscover": "*",
+    "blanket": "*",
+    "travis-cov": "*",
+    "coveralls": "*",
+    "mocha-lcov-reporter": "*",
     "mocha": "*"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
