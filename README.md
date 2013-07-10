@@ -46,7 +46,7 @@ var req = http.request(options, function (res) {
 form.pipe(req);
 ```
 
-### `form.setTotalStreamSize(size)`: Upload file with `Content-Length`
+### Uploading with known `Content-Length`
 
 If you know the `ReadStream` total size and you must to set `Content-Length`.
 You may want to use `form.setTotalStreamSize(size)`.
@@ -76,7 +76,99 @@ fs.stat('./logo.png', function (err, stat) {
 });
 ```
 
-## License 
+## API Doc
+
+### formstream()
+
+Create a form instance.
+
+#### Returns
+
+`form`
+
+### .field(name, value)
+
+Add a normal field to the form.
+
+#### Arguments
+
+- **name** String - Name of field
+- **value** String - Value of field
+
+### .file(name, filepath[, filename])
+
+Add a local file to be uploaded to the form.
+
+#### Arguments
+
+- **name** String - Name of file field
+- **filepath** String - Local path of the file to be uploaded
+- ***filename*** String - Optional. Name of the file (will be the base name of `filepath` if empty)
+
+### .buffer(name, buffer, filename[, contentType])
+
+Add a buffer as a file to upload.
+
+#### Arguments
+
+- **name** String - Name of field
+- **buffer** Buffer - The buffer to be uploaded
+- **filename** String - The file name that tells the remote server
+- ***contentType*** String - Optional. Content-Type (aka. MIME Type) of content (will be infered with `filename` if empty)
+
+### .stream(name, stream, filename[, contentType])
+
+Add a readable stream as a file to upload. Event 'error' will be emitted if an error occured.
+
+#### Arguments
+
+- **name** String - Name of field
+- **stream** [stream.Readable](http://nodejs.org/api/stream.html#stream_class_stream_readable) - A readable stream to be piped
+- **filename** String - The file name that tells the remote server
+- ***contentType*** String - Optional. Content-Type (aka. MIME Type) of content (will be infered with `filename` if empty)
+
+### .setTotalStreamSize(size)
+
+In some case you may want a `Content-Length` sent with the POST request. If the total size of streams are known, you can tell it with this method.
+
+#### Arguments
+
+- **size** Number - Size of total stream in bytes.
+
+### .headers(headers)
+
+Add headers to the form payload.
+
+#### Arguments
+
+- **headers** Object - An object contains headers you want to add
+
+#### Example
+
+```js
+form.headers({
+  'Authorization': 'Bearer kei2akc92jmznvnkeh09sknzdk',
+  'Accept': 'application/vnd.github.v3.full+json'
+})
+```
+
+### Event 'error'
+
+Emitted if there was an error receiving data.
+
+### Event 'data'
+
+The 'data' event emits when a Buffer was used.
+
+See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_data) for more.
+
+### Event 'end'
+
+Emitted when the stream has received no more 'data' events will happen.
+
+See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) for more.
+
+## License
 
 (The MIT License)
 
