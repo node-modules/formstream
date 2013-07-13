@@ -78,7 +78,7 @@ fs.stat('./logo.png', function (err, stat) {
 
 ### Chaining
 
-```
+```js
 var stat = require('fs').statSync;
 var form = require('formstream')();
 
