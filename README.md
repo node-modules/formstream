@@ -11,7 +11,7 @@ A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, help
 $ npm install formstream
 ```
 
-## Usage
+## Quick-start
 
 ```js
 var formstream = require('formstream');
