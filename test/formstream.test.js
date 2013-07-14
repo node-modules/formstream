@@ -331,7 +331,7 @@ describe('formstream.test.js', function () {
         files.bar.size.should.equal(bar.length);
         files.bar.mime.should.equal('application/javascript');
         fs.readFileSync(files.bar.path, 'utf8').should.equal('bar content中文');
-        
+
         files.logo.filename.should.equal('logo.png');
         files.logo.size.should.equal(fs.statSync(logopath).size)
         files.logo.mime.should.equal('image/png');
@@ -362,7 +362,7 @@ describe('formstream.test.js', function () {
         files.file.filename.should.equal('foo.txt');
         files.file.size.should.equal(buffer.length);
         files.file.mime.should.equal('text/plain');
-        
+
         files.logo.filename.should.equal('logo.png');
         files.logo.size.should.equal(fs.statSync(logopath).size)
         files.logo.mime.should.equal('image/png');
@@ -390,8 +390,34 @@ describe('formstream.test.js', function () {
       headers['X-Test'].should.equal('hello');
       headers['Content-Length'].should.equal('171');
     });
-
   });
+
+  describe('chaining', function () {
+    it('should do chaining calls with .field()', function () {
+      var form = formstream();
+      form.field('foo', 'bar').should.equal(form);
+    });
+
+    it('should do chaining calls with .file()', function () {
+      var form = formstream();
+      form.file('foo', './logo.png', 'bar').should.equal(form);
+    });
+
+    it('should do chaining calls with .buffer()', function () {
+      var form = formstream();
+      form.buffer('foo', new Buffer('foo content'), 'bar').should.equal(form);
+    });
+
+    it('should do chaining calls with .stream()', function () {
+      var form = formstream();
+      form.stream('foo', cunterStream('stream', 5), 'bar').should.equal(form);
+    });
+
+    it('should do chaining calls with .setTotalStreamSize()', function () {
+      var form = formstream();
+      form.setTotalStreamSize(10).should.equal(form);
+    });
+  })
 
 });
 
