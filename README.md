@@ -11,7 +11,7 @@ A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, help
 $ npm install formstream
 ```
 
-## Quick-start
+## Quick Start
 
 ```js
 var formstream = require('formstream');
@@ -23,8 +23,7 @@ var form = formstream();
 form.file('file', './logo.png', 'upload-logo.png');
 
 // other form fields
-form.field('foo', 'fengmk2');
-form.field('love', 'aerdeng');
+form.field('foo', 'fengmk2').field('love', 'aerdeng');
 
 // even send file content buffer directly
 // form.buffer(name, buffer, filename, mimeType)
@@ -99,7 +98,7 @@ Create a form instance.
 
 `form`
 
-### .field(name, value)
+### FormStream#field(name, value)
 
 Add a normal field to the form.
 
@@ -112,7 +111,7 @@ Add a normal field to the form.
 
 `form`
 
-### .file(name, filepath[, filename])
+### FormStream#file(name, filepath[, filename])
 
 Add a local file to be uploaded to the form.
 
@@ -126,7 +125,7 @@ Add a local file to be uploaded to the form.
 
 `form`
 
-### .buffer(name, buffer, filename[, contentType])
+### FormStream#buffer(name, buffer, filename[, contentType])
 
 Add a buffer as a file to upload.
 
@@ -141,7 +140,7 @@ Add a buffer as a file to upload.
 
 `form`
 
-### .stream(name, stream, filename[, contentType])
+### FormStream#stream(name, stream, filename[, contentType])
 
 Add a readable stream as a file to upload. Event 'error' will be emitted if an error occured.
 
@@ -156,7 +155,7 @@ Add a readable stream as a file to upload. Event 'error' will be emitted if an e
 
 `form`
 
-### .setTotalStreamSize(size)
+### FormStream#setTotalStreamSize(size)
 
 In some case you may want a `Content-Length` sent with the POST request. If the total size of streams are known, you can tell it with this method.
 
@@ -168,7 +167,7 @@ In some case you may want a `Content-Length` sent with the POST request. If the 
 
 `form`
 
-### .headers(headers)
+### FormStream#headers(headers)
 
 Add headers to the form payload.
 
@@ -204,6 +203,21 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_data)
 Emitted when the stream has received no more 'data' events will happen.
 
 See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) for more.
+
+## Authors
+
+```bash
+$ git summary 
+
+ project  : formstream
+ repo age : 9 months
+ active   : 12 days
+ commits  : 24
+ files    : 14
+ authors  : 
+    19  fengmk2                 79.2%
+     5  XiNGRZ                  20.8%
+```
 
 ## License
 

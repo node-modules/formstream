@@ -1,4 +1,14 @@
 
+0.0.6 / 2013-07-15 
+==================
+
+  * added test cases for chaining call (@xingrz)
+  * improved docs (@xingrz)
+  * added chaining support (@xingrz)
+  * api doc
+  * fixed test causes
+  * update dependencies version
+
 0.0.5 / 2012-11-06 
 ==================
 
