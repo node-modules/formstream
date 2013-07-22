@@ -111,7 +111,7 @@ Add a normal field to the form.
 
 `form`
 
-### FormStream#file(name, filepath[, filename])
+### FormStream#file(name, filepath[, filename][, filesize])
 
 Add a local file to be uploaded to the form.
 
@@ -120,6 +120,7 @@ Add a local file to be uploaded to the form.
 - **name** String - Name of file field
 - **filepath** String - Local path of the file to be uploaded
 - ***filename*** String - Optional. Name of the file (will be the base name of `filepath` if empty)
+- ***filesize*** Number - Optional. Size of the file (will not generate `Content-Length` header if not specified)
 
 #### Returns
 
@@ -140,7 +141,7 @@ Add a buffer as a file to upload.
 
 `form`
 
-### FormStream#stream(name, stream, filename[, contentType])
+### FormStream#stream(name, stream, filename[, contentType][, size])
 
 Add a readable stream as a file to upload. Event 'error' will be emitted if an error occured.
 
@@ -150,38 +151,43 @@ Add a readable stream as a file to upload. Event 'error' will be emitted if an e
 - **stream** [stream.Readable](http://nodejs.org/api/stream.html#stream_class_stream_readable) - A readable stream to be piped
 - **filename** String - The file name that tells the remote server
 - ***contentType*** String - Optional. Content-Type (aka. MIME Type) of content (will be infered with `filename` if empty)
+- ***size*** Number - Optional. Size of the stream (will not generate `Content-Length` header if not specified)
 
 #### Returns
 
 `form`
 
-### FormStream#setTotalStreamSize(size)
+### FormStream#setTotalStreamSize([size])
 
-In some case you may want a `Content-Length` sent with the POST request. If the total size of streams are known, you can tell it with this method.
+**[Deprecated]**
+
+This method is used to set the total length of all streams if you want a `Content-Length` header sent with the POST request.
+
+This method is currently **DEPRECATED** and you may specify sizes of each stream or file when calling `FormStream#file` or `FormStream#sream`. In this case this method will **NOT** make any sense if all streams and files are added with a known size.
 
 #### Arguments
 
-- **size** Number - Size of total stream in bytes.
+- ***size*** Number - Defaults to 0. Size of total stream in bytes.
 
 #### Returns
 
 `form`
 
-### FormStream#headers(headers)
+### FormStream#headers([headers])
 
-Add headers to the form payload.
+Get headers for the request.
 
 #### Arguments
 
-- **headers** Object - An object contains headers you want to add
+- ***headers*** Object - Additional headers
 
 #### Example
 
 ```js
-form.headers({
+var headers = form.headers({
   'Authorization': 'Bearer kei2akc92jmznvnkeh09sknzdk',
   'Accept': 'application/vnd.github.v3.full+json'
-})
+});
 ```
 
 #### Returns
@@ -207,14 +213,14 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 ## Authors
 
 ```bash
-$ git summary 
+$ git summary
 
  project  : formstream
  repo age : 9 months
  active   : 12 days
  commits  : 24
  files    : 14
- authors  : 
+ authors  :
     19  fengmk2                 79.2%
      5  XiNGRZ                  20.8%
 ```
