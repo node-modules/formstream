@@ -45,36 +45,6 @@ var req = http.request(options, function (res) {
 form.pipe(req);
 ```
 
-### Uploading with known `Content-Length`
-
-If you know the `ReadStream` total size and you must to set `Content-Length`.
-You may want to use `form.setTotalStreamSize(size)`.
-
-```js
-var formstream = require('formstream');
-var http = require('http');
-var fs = require('fs');
-
-fs.stat('./logo.png', function (err, stat) {
-  var form = formstream();
-  form.file('file', './logo.png', 'upload-logo.png');
-  form.setTotalStreamSize(stat.size);
-  var options = {
-    method: 'POST',
-    host: 'upload.cnodejs.net',
-    path: '/store',
-    headers: form.headers()
-  };
-  var req = http.request(options, function (res) {
-    console.log('Status: %s', res.statusCode);
-    res.on('data', function (data) {
-      console.log(data.toString());
-    });
-  });
-  form.pipe(req);
-});
-```
-
 ### Chaining
 
 ```js
@@ -83,8 +53,7 @@ var form = require('formstream')();
 
 form.field('status', 'share picture')
     .field('access_token', 'dk10f88bhza-39kgna.d91')
-    .file('pic', './logo.png', 'logo.png')
-    .setTotalStreamSize(stat('./logo.png').size)
+    .file('pic', './logo.png', 'logo.png', stat('./logo.png').size)
     .pipe(/* your request stream */);
 ```
 
@@ -152,22 +121,6 @@ Add a readable stream as a file to upload. Event 'error' will be emitted if an e
 - **filename** String - The file name that tells the remote server
 - ***contentType*** String - Optional. Content-Type (aka. MIME Type) of content (will be infered with `filename` if empty)
 - ***size*** Number - Optional. Size of the stream (will not generate `Content-Length` header if not specified)
-
-#### Returns
-
-`form`
-
-### FormStream#setTotalStreamSize([size])
-
-**[Deprecated]**
-
-This method is used to set the total length of all streams if you want a `Content-Length` header sent with the POST request.
-
-This method is currently **DEPRECATED** and you may specify sizes of each stream or file when calling `FormStream#file` or `FormStream#sream`. In this case this method will **NOT** make any sense if all streams and files are added with a known size.
-
-#### Arguments
-
-- ***size*** Number - Defaults to 0. Size of total stream in bytes.
 
 #### Returns
 
