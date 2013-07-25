@@ -48,13 +48,16 @@ form.pipe(req);
 ### Chaining
 
 ```js
-var stat = require('fs').statSync;
-var form = require('formstream')();
+var fs = require('fs');
+var formstream = require('formstream');
 
-form.field('status', 'share picture')
-    .field('access_token', 'dk10f88bhza-39kgna.d91')
-    .file('pic', './logo.png', 'logo.png', stat('./logo.png').size)
-    .pipe(/* your request stream */);
+var filepath = './logo.png';
+fs.stat(filepath, function (err, stat) {
+  formstream().field('status', 'share picture')
+      .field('access_token', 'your access token')
+      .file('pic', filepath, 'logo.png', stat.size)
+      .pipe(process.stdout); // your request stream
+});
 ```
 
 ## API Doc
@@ -65,7 +68,7 @@ Create a form instance.
 
 #### Returns
 
-`form`
+Form - form instance
 
 ### FormStream#field(name, value)
 
@@ -78,7 +81,7 @@ Add a normal field to the form.
 
 #### Returns
 
-`form`
+Form - form instance
 
 ### FormStream#file(name, filepath[, filename][, filesize])
 
@@ -93,7 +96,7 @@ Add a local file to be uploaded to the form.
 
 #### Returns
 
-`form`
+Form - form instance
 
 ### FormStream#buffer(name, buffer, filename[, contentType])
 
@@ -108,7 +111,7 @@ Add a buffer as a file to upload.
 
 #### Returns
 
-`form`
+Form - form instance
 
 ### FormStream#stream(name, stream, filename[, contentType][, size])
 
@@ -124,7 +127,7 @@ Add a readable stream as a file to upload. Event 'error' will be emitted if an e
 
 #### Returns
 
-`form`
+Form - form instance
 
 ### FormStream#headers([headers])
 
@@ -166,16 +169,16 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 ## Authors
 
 ```bash
-$ git summary
+$ git summary 
 
  project  : formstream
- repo age : 9 months
- active   : 12 days
- commits  : 24
+ repo age : 10 months
+ active   : 15 days
+ commits  : 28
  files    : 14
- authors  :
-    19  fengmk2                 79.2%
-     5  XiNGRZ                  20.8%
+ authors  : 
+    21  fengmk2                 75.0%
+     7  XiNGRZ                  25.0%
 ```
 
 ## License

@@ -1,4 +1,10 @@
 
+0.0.7 / 2013-07-25 
+==================
+
+  * feature: always try to infer `Content-Length` (@xingrz)
+  * doc improve
+
 0.0.6 / 2013-07-15 
 ==================
 
