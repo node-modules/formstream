@@ -13,6 +13,15 @@
 var connect = require('connect');
 
 var app = connect(
+  function (req, res, next) {
+    req.on('data', function (data) {
+      // process.stdout.write(data);
+    });
+    req.on('end', function () {
+      // console.log(req.url, req.headers, 'end')
+    });
+    next();
+  },
   connect.bodyParser(),
   function (req, res, next) {
     var files = {};
@@ -25,7 +34,6 @@ var app = connect(
         path: f.path
       };
     }
-    // console.log(files)
     res.end(JSON.stringify({
       url: req.url,
       method: req.method,

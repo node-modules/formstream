@@ -17,7 +17,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var should = require('should');
-
+var urllib = require('urllib');
 
 var root = path.dirname(__dirname);
 var app = require('./fixtures/server');
@@ -98,6 +98,34 @@ describe('formstream.test.js', function () {
       data.files.should.eql({});
       done(err);
     });
+  });
+
+  it('should upload a stream without size, use "Transfer-Encoding: chunked"', function (done) {
+    var ChunkedStream = require('../../chunked');
+    var form = formstream();
+    form.stream('file', fs.createReadStream(path.join(__dirname, 'fixtures', 'foo.txt')), 'foo.txt');
+    form.field('name', '哈哈');
+    var headers = form.headers();
+    headers['Transfer-Encoding'] = 'chunked';
+    var chunked = new ChunkedStream();
+    form.pipe(chunked);
+
+    var options = {
+      method: 'post',
+      headers: headers,
+      // dataType: 'json',
+      stream: chunked,
+    };
+    var url = 'http://127.0.0.1:' + port;
+    // url = 'http://cgi-lib.berkeley.edu/ex/fup.cgi';
+
+    urllib.request(url, options, function (err, data, res) {
+      should.not.exist(err);
+      // console.log(data.toString());
+      res.should.status(200);
+      done();
+    });
+    // chunked.pipe(process.stdout);
   });
 
   it('should post fields and file', function (done) {
@@ -425,7 +453,7 @@ describe('formstream.test.js', function () {
       var form = formstream();
       form.setTotalStreamSize(10).should.equal(form);
     });
-  })
+  });
 
 });
 

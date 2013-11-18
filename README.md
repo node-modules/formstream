@@ -1,6 +1,8 @@
 formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Coverage Status](https://coveralls.io/repos/fengmk2/formstream/badge.png)](https://coveralls.io/r/fengmk2/formstream)
 ==========
 
+[![NPM](https://nodei.co/npm/formstream.png?downloads=true&stars=true)](https://nodei.co/npm/formstream/)
+
 ![logo](https://raw.github.com/fengmk2/formstream/master/logo.png)
 
 A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, helper for file upload.
@@ -169,14 +171,14 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 ## Authors
 
 ```bash
-$ git summary 
+$ git summary
 
  project  : formstream
  repo age : 10 months
  active   : 15 days
  commits  : 28
  files    : 14
- authors  : 
+ authors  :
     21  fengmk2                 75.0%
      7  XiNGRZ                  25.0%
 ```

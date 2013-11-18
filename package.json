@@ -27,6 +27,7 @@
     "pause-stream": ">=0.0.10"
   },
   "devDependencies": {
+    "urllib": "*",
     "connect": "*",
     "should": "*",
     "pedding": "*",
