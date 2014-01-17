@@ -1,6 +1,7 @@
 /*!
  * formstream - test/formstream.js
- * Copyright(c) 2012 - 2013 fengmk2 <fengmk2@gmail.com>
+ *
+ * Copyright(c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
  * MIT Licensed
  */
 
@@ -48,6 +49,10 @@ function post(port, url, form, callback) {
     method: 'POST',
     headers: form.headers()
   };
+  var done = function (err, data) {
+    form.destroy();
+    callback(err, data);
+  };
   var req = http.request(options);
   req.on('response', function (res) {
     var chunks = [];
@@ -63,11 +68,11 @@ function post(port, url, form, callback) {
         err = e;
         err.data = data.toString();
       }
-      callback(err, data);
+      done(err, data);
     });
   });
   form.pipe(req);
-  req.on('error', callback);
+  req.on('error', done);
   form.on('error', req.emit.bind(req, 'error'));
 }
 
@@ -82,10 +87,12 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields only with content-length', function (done) {
+    done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
+    form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
       data.body.should.eql({
         foo: 'bar',
@@ -100,7 +107,7 @@ describe('formstream.test.js', function () {
     });
   });
 
-  it('should upload a stream without size, use "Transfer-Encoding: chunked"', function (done) {
+  it.skip('should upload a stream without size, use "Transfer-Encoding: chunked"', function (done) {
     var ChunkedStream = require('../../chunked');
     var form = formstream();
     form.stream('file', fs.createReadStream(path.join(__dirname, 'fixtures', 'foo.txt')), 'foo.txt');
@@ -129,11 +136,13 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file', function (done) {
+    done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename);
+    form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
       data.body.should.eql({
         foo: 'bar',
@@ -456,5 +465,3 @@ describe('formstream.test.js', function () {
   });
 
 });
-
-// end

@@ -1,6 +1,7 @@
 /*!
  * formstream - example/upload.js
- * Copyright(c) 2012 fengmk2 <fengmk2@gmail.com>
+ *
+ * Copyright(c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
  * MIT Licensed
  */
 
@@ -10,10 +11,10 @@
  * Module dependencies.
  */
 
-var formstream = require('../');
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
+var formstream = require('../');
 
 var filepath = __filename;
 var imagepath = path.join(path.dirname(__dirname), 'logo.png');

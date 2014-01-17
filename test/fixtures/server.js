@@ -1,6 +1,7 @@
 /*!
  * formstream - test/fixtures/server.js
- * Copyright(c) 2012 fengmk2 <fengmk2@gmail.com>
+ *
+ * Copyright(c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
  * MIT Licensed
  */
 
@@ -11,18 +12,20 @@
  */
 
 var connect = require('connect');
+var multipart = require('connect-multiparty');
 
 var app = connect(
-  function (req, res, next) {
-    req.on('data', function (data) {
-      // process.stdout.write(data);
-    });
-    req.on('end', function () {
-      // console.log(req.url, req.headers, 'end')
-    });
-    next();
-  },
-  connect.bodyParser(),
+  // function (req, res, next) {
+  //   console.log(req.url, req.headers)
+  //   req.on('data', function (data) {
+  //     console.log(JSON.stringify(data.toString()));
+  //   });
+  //   req.on('end', function () {
+  //     console.log(req.url, req.headers, 'end')
+  //   });
+  //   next();
+  // },
+  multipart(),
   function (req, res, next) {
     var files = {};
     for (var k in req.files) {
