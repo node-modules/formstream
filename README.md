@@ -1,4 +1,4 @@
-formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Coverage Status](https://coveralls.io/repos/fengmk2/formstream/badge.png)](https://coveralls.io/r/fengmk2/formstream)
+formstream [![Build Status](https://secure.travis-ci.org/fengmk2/formstream.png)](http://travis-ci.org/fengmk2/formstream) [![Coverage Status](https://coveralls.io/repos/fengmk2/formstream/badge.png)](https://coveralls.io/r/fengmk2/formstream) [![Dependency Status](https://gemnasium.com/fengmk2/formstream.png)](https://gemnasium.com/fengmk2/formstream)
 ==========
 
 [![NPM](https://nodei.co/npm/formstream.png?downloads=true&stars=true)](https://nodei.co/npm/formstream/)

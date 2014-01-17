@@ -8,7 +8,7 @@
   },
   "config": {
     "blanket": { "pattern": "formstream/lib" },
-    "cov": { "threshold": 100 }
+    "travis-cov": { "threshold": 100 }
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "connect": "2.12.0",
     "connect-multiparty": "1.0.1",
     "contributors": "*",
-    "cov": "*",
+    "travis-cov": "*",
     "coveralls": "*",
     "mocha": "*",
     "mocha-lcov-reporter": "*",

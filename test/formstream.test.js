@@ -213,20 +213,23 @@ describe('formstream.test.js', function () {
     });
   });
 
-  it('should post not exist file return error', function (done) {
-    var form = formstream();
-    form.field('foo', 'bar');
-    form.field('name', '中文名字');
-    form.field('pwd', '哈哈pwd');
-    form.file('file', __filename + 'notexists');
-    form.setTotalStreamSize(100);
-    post(port, '/post', form, function (err, data) {
-      should.exist(err);
-      err.message.should.include('formstream/test/formstream.test.jsnotexists');
-      err.message.should.include('ENOENT, open ');
-      done();
+  if (process.version.indexOf('v0.8.') !== 0) {
+    // node 0.8, createSteram not exists file will throw error
+    it('should post not exist file return error ENOENT', function (done) {
+      var form = formstream();
+      form.field('foo', 'bar');
+      form.field('name', '中文名字');
+      form.field('pwd', '哈哈pwd');
+      form.file('file', __filename + 'notexists');
+      form.setTotalStreamSize(100);
+      post(port, '/post', form, function (err, data) {
+        should.exist(err);
+        err.message.should.include('formstream/test/formstream.test.jsnotexists');
+        err.message.should.include('ENOENT, open ');
+        done();
+      });
     });
-  });
+  }
 
   it('should post fields and stream', function (done) {
     var form = formstream();
