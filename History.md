@@ -1,4 +1,10 @@
 
+0.0.8 / 2014-01-17 
+==================
+
+  * destroy source stream when formstream destroy()
+  * add more test cases
+
 0.0.7 / 2013-07-25 
 ==================
 
