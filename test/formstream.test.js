@@ -140,17 +140,20 @@ describe('formstream.test.js', function () {
 
   it('should post fields and file', function (done) {
     done = pedding(2, done);
+    var now = Date.now();
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
+    form.field('now', now);
     form.file('file', __filename);
     form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
       data.body.should.eql({
         foo: 'bar',
         name: '中文名字',
-        pwd: '哈哈pwd'
+        pwd: '哈哈pwd',
+        now: String(now)
       });
       data.headers.should.not.have.property('content-length');
       data.headers.should.have.property('content-type')
