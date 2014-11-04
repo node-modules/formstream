@@ -1,4 +1,12 @@
 
+1.0.0 / 2014-11-04
+==================
+
+ * fix(field): support stream.field(String, Number)
+ * chore: fix links
+ * chore: use npm scripts instead of Makefile
+ * fix test case on node@0.8
+
 0.0.8 / 2014-01-17 
 ==================
 
