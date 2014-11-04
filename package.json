@@ -12,13 +12,9 @@
     "cnpm": "npm install --registry=https://registry.npm.taobao.org",
     "contributors": "contributors -f plain -o AUTHORS"
   },
-  "config": {
-    "blanket": { "pattern": "formstream/lib" },
-    "travis-cov": { "threshold": 100 }
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/fengmk2/formstream.git"
+    "url": "git://github.com/node-modules/formstream.git"
   },
   "keywords": [
     "form",
