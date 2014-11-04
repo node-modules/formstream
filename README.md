@@ -168,26 +168,26 @@ Emitted when the stream has received no more 'data' events will happen.
 
 See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) for more.
 
-## Authors
+## Contributors
 
 ```bash
 $ git summary
 
  project  : formstream
- repo age : 10 months
- active   : 15 days
- commits  : 28
+ repo age : 2 years, 1 month
+ active   : 17 days
+ commits  : 33
  files    : 14
  authors  :
-    21  fengmk2                 75.0%
-     7  XiNGRZ                  25.0%
+    26	fengmk2                 78.8%
+     7	XiNGRZ                  21.2%
 ```
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2012 - 2013 fengmk2 &lt;fengmk2@gmail.com&gt;
+Copyright (c) 2012 - 2014 fengmk2 &lt;fengmk2@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

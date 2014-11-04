@@ -16,7 +16,6 @@ var fs = require('fs');
 var path = require('path');
 var formstream = require('../');
 
-var filepath = __filename;
 var imagepath = path.join(path.dirname(__dirname), 'logo.png');
 
 var form = formstream();

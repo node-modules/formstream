@@ -1,24 +1,27 @@
-/*!
- * formstream - test/formstream.js
+/**!
+ * formstream - test/formstream.test.js
  *
- * Copyright(c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
+ * Copyright(c) fengmk2 and other contributors.
  * MIT Licensed
+ *
+ * Authors:
+ *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)
  */
 
-"use strict";
+'use strict';
 
 /**
  * Module dependencies.
  */
 
 var pedding = require('pedding');
-var formstream = require('../');
 var Stream = require('stream');
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var should = require('should');
 var urllib = require('urllib');
+var formstream = require('../');
 
 var root = path.dirname(__dirname);
 var app = require('./fixtures/server');
@@ -77,7 +80,6 @@ function post(port, url, form, callback) {
 }
 
 describe('formstream.test.js', function () {
-
   var port;
   before(function (done) {
     app = app.listen(0, function () {
@@ -94,6 +96,7 @@ describe('formstream.test.js', function () {
     form.field('pwd', '哈哈pwd');
     form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
+      should.not.exist(err);
       data.body.should.eql({
         foo: 'bar',
         name: '中文名字',
@@ -195,7 +198,7 @@ describe('formstream.test.js', function () {
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename);
     form.setTotalStreamSize(100);
-    post(port, '/post', form, function (err, data) {
+    post(port, '/post', form, function (err) {
       should.exist(err);
       done();
     });
@@ -207,7 +210,7 @@ describe('formstream.test.js', function () {
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename, 100);
-    post(port, '/post', form, function (err, data) {
+    post(port, '/post', form, function (err) {
       should.exist(err);
       done();
     });
@@ -222,10 +225,10 @@ describe('formstream.test.js', function () {
       form.field('pwd', '哈哈pwd');
       form.file('file', __filename + 'notexists');
       form.setTotalStreamSize(100);
-      post(port, '/post', form, function (err, data) {
+      post(port, '/post', form, function (err) {
         should.exist(err);
-        err.message.should.include('formstream/test/formstream.test.jsnotexists');
-        err.message.should.include('ENOENT, open ');
+        err.message.should.containEql('formstream/test/formstream.test.jsnotexists');
+        err.message.should.containEql('ENOENT, open ');
         done();
       });
     });
@@ -365,7 +368,7 @@ describe('formstream.test.js', function () {
         fs.readFileSync(files.bar.path, 'utf8').should.equal('bar content中文');
 
         files.logo.filename.should.equal('logo.png');
-        files.logo.size.should.equal(fs.statSync(logopath).size)
+        files.logo.size.should.equal(fs.statSync(logopath).size);
         files.logo.mime.should.equal('image/png');
         done(err);
       });
@@ -396,7 +399,7 @@ describe('formstream.test.js', function () {
         files.file.mime.should.equal('text/plain');
 
         files.logo.filename.should.equal('logo.png');
-        files.logo.size.should.equal(fs.statSync(logopath).size)
+        files.logo.size.should.equal(fs.statSync(logopath).size);
         files.logo.mime.should.equal('image/png');
         done(err);
       });
@@ -409,7 +412,7 @@ describe('formstream.test.js', function () {
       form.field('foo', 'bar');
       var headers = form.headers({ 'X-Test': 'hello' });
       headers.should.have.keys('Content-Type', 'Content-Length', 'X-Test');
-      headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/)
+      headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/);
       headers['X-Test'].should.equal('hello');
       headers['Content-Length'].should.equal('161');
     });
