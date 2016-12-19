@@ -3,9 +3,7 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![Gittip][gittip-image]][gittip-url]
 [![David deps][david-image]][david-url]
-[![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/formstream.svg?style=flat-square
@@ -14,16 +12,10 @@
 [travis-url]: https://travis-ci.org/node-modules/formstream
 [coveralls-image]: https://img.shields.io/coveralls/node-modules/formstream.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/node-modules/formstream?branch=master
-[gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat-square
-[gittip-url]: https://www.gittip.com/fengmk2/
 [david-image]: https://img.shields.io/david/node-modules/formstream.svg?style=flat-square
 [david-url]: https://david-dm.org/node-modules/formstream
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/formstream.svg?style=flat-square
 [download-url]: https://npmjs.org/package/formstream
-
-![logo](https://raw.github.com/fengmk2/formstream/master/logo.png)
 
 A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, helper for file upload.
 
@@ -188,26 +180,12 @@ Emitted when the stream has received no more 'data' events will happen.
 
 See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) for more.
 
-## Contributors
-
-```bash
-$ git summary
-
- project  : formstream
- repo age : 2 years, 1 month
- active   : 17 days
- commits  : 33
- files    : 14
- authors  :
-    26	fengmk2                 78.8%
-     7	XiNGRZ                  21.2%
-```
-
 ## License
 
 (The MIT License)
 
 Copyright (c) 2012 - 2014 fengmk2 &lt;fengmk2@gmail.com&gt;
+Copyright(c) node-modules and other contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
