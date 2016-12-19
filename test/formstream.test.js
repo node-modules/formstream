@@ -1,18 +1,4 @@
-/**!
- * formstream - test/formstream.test.js
- *
- * Copyright(c) fengmk2 and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 var pedding = require('pedding');
 var Stream = require('stream');
@@ -23,7 +9,7 @@ var should = require('should');
 var urllib = require('urllib');
 var formstream = require('../');
 
-var root = path.dirname(__dirname);
+var root = path.join(__dirname, 'fixtures');
 var app = require('./fixtures/server');
 
 function cunterStream(name, count) {
@@ -231,7 +217,7 @@ describe('formstream.test.js', function () {
       post(port, '/post', form, function (err) {
         should.exist(err);
         err.message.should.containEql('formstream/test/formstream.test.jsnotexists');
-        err.message.should.containEql('ENOENT, open ');
+        err.message.should.containEql('ENOENT');
         done();
       });
     });
