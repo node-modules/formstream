@@ -7,23 +7,25 @@ var fs = require('fs');
 var path = require('path');
 var should = require('should');
 var urllib = require('urllib');
-var formstream = require('../');
+var FormStream = require('../');
 
 var root = path.join(__dirname, 'fixtures');
 var app = require('./fixtures/server');
 
 function cunterStream(name, count) {
-  var s = new Stream();
+  var s = new Stream.Readable({
+    read: () => {}
+  });
   s.size = 0;
   var timer = setInterval(function () {
     var data = name + ' counter stream' + count + '\r\n';
     s.size += data.length;
-    s.emit('data', data);
+    s.push(data);
     count--;
     if (count <= 0) {
       clearInterval(timer);
       process.nextTick(function () {
-        s.emit('end');
+        s.push(null);
       });
     }
   }, 100);
@@ -76,11 +78,11 @@ describe('formstream.test.js', function () {
 
   it('should post fields only with content-length', function (done) {
     done = pedding(2, done);
-    var form = formstream();
+    var form = new FormStream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
-    form.on('destroy', done);
+    form.on('end', done);
     post(port, '/post', form, function (err, data) {
       should.not.exist(err);
       data.body.should.eql({
@@ -98,7 +100,7 @@ describe('formstream.test.js', function () {
 
   it.skip('should upload a stream without size, use "Transfer-Encoding: chunked"', function (done) {
     var ChunkedStream = require('../../chunked');
-    var form = formstream();
+    var form = new FormStream();
     form.stream('file', fs.createReadStream(path.join(__dirname, 'fixtures', 'foo.txt')), 'foo.txt');
     form.field('name', '哈哈');
     var headers = form.headers();
@@ -127,13 +129,14 @@ describe('formstream.test.js', function () {
   it('should post fields and file', function (done) {
     done = pedding(2, done);
     var now = Date.now();
-    var form = formstream();
+    var form = new FormStream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.field('now', now);
     form.file('file', __filename);
-    form.on('destroy', done);
+    form.on('end', done);
+    form.on('error', console.log);
     post(port, '/post', form, function (err, data) {
       data.body.should.eql({
         foo: 'bar',
@@ -155,7 +158,7 @@ describe('formstream.test.js', function () {
 
   it('should post fields and file with content-length', function (done) {
     fs.stat(__filename, function (err, stat) {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
@@ -181,7 +184,7 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file with wrong stream size will return error', function (done) {
-    var form = formstream();
+    var form = new FormStream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
@@ -194,7 +197,7 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file with wrong size will return error', function (done) {
-    var form = formstream();
+    var form = new FormStream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
@@ -208,7 +211,7 @@ describe('formstream.test.js', function () {
   if (process.version.indexOf('v0.8.') !== 0) {
     // node 0.8, createSteram not exists file will throw error
     it('should post not exist file return error ENOENT', function (done) {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
@@ -224,7 +227,7 @@ describe('formstream.test.js', function () {
   }
 
   it('should post fields and stream', function (done) {
-    var form = formstream();
+    var form = new FormStream();
     var s1 = cunterStream('no1', 5);
     form.stream('stream1', s1, 'stream1中文名.txt', 'text/html');
     var s2 = cunterStream('no2', 3);
@@ -263,7 +266,7 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields, 2 file', function (done) {
-    var form = formstream();
+    var form = new FormStream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
@@ -289,7 +292,7 @@ describe('formstream.test.js', function () {
   it('should post fields, 2 file with content-length', function (done) {
     var size = 0;
     var ready = function () {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
@@ -327,7 +330,7 @@ describe('formstream.test.js', function () {
 
   describe('buffer()', function () {
     it('should post file content buffer', function (done) {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
@@ -364,7 +367,7 @@ describe('formstream.test.js', function () {
     });
 
     it('should post file content buffer with content-length', function (done) {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
@@ -397,7 +400,7 @@ describe('formstream.test.js', function () {
 
   describe('headers()', function () {
     it('should get headers contains correct content-length', function () {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar');
       var headers = form.headers({ 'X-Test': 'hello' });
       headers.should.have.keys('Content-Type', 'Content-Length', 'X-Test');
@@ -407,17 +410,17 @@ describe('formstream.test.js', function () {
     });
 
     it('should trust .setTotalStreamSize() only if has any stream/file without size specified', function () {
-      var headers1 = formstream()
+      var headers1 = new FormStream()
         .field('field', 'plain')
-        .file('file', './logo.png', 'file')
+        .file('file', './test/fixtures/logo.png', 'file')
         .buffer('buffer', new Buffer(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream')
         .setTotalStreamSize(10)
         .headers();
 
-      var headers2 = formstream()
+      var headers2 = new FormStream()
         .field('field', 'plain')
-        .file('file', './logo.png', 'file', 10)
+        .file('file', './test/fixtures/logo.png', 'file', 10)
         .buffer('buffer', new Buffer(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream', 30)
         .headers();
@@ -434,27 +437,27 @@ describe('formstream.test.js', function () {
 
   describe('chaining', function () {
     it('should do chaining calls with .field()', function () {
-      var form = formstream();
+      var form = new FormStream();
       form.field('foo', 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .file()', function () {
-      var form = formstream();
-      form.file('foo', './logo.png', 'bar').should.equal(form);
+      var form = new FormStream();
+      form.file('foo', './test/fixtures/logo.png', 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .buffer()', function () {
-      var form = formstream();
+      var form = new FormStream();
       form.buffer('foo', new Buffer('foo content'), 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .stream()', function () {
-      var form = formstream();
+      var form = new FormStream();
       form.stream('foo', cunterStream('stream', 5), 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .setTotalStreamSize()', function () {
-      var form = formstream();
+      var form = new FormStream();
       form.setTotalStreamSize(10).should.equal(form);
     });
   });
