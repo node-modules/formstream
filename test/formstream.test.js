@@ -409,7 +409,7 @@ describe('formstream.test.js', function () {
     it('should trust .setTotalStreamSize() only if has any stream/file without size specified', function () {
       var headers1 = formstream()
         .field('field', 'plain')
-        .file('file', './logo.png', 'file')
+        .file('file', path.join(root, 'logo.png'), 'file')
         .buffer('buffer', new Buffer(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream')
         .setTotalStreamSize(10)
@@ -417,7 +417,7 @@ describe('formstream.test.js', function () {
 
       var headers2 = formstream()
         .field('field', 'plain')
-        .file('file', './logo.png', 'file', 10)
+        .file('file', path.join(root, 'logo.png'), 'file', 10)
         .buffer('buffer', new Buffer(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream', 30)
         .headers();
@@ -440,7 +440,7 @@ describe('formstream.test.js', function () {
 
     it('should do chaining calls with .file()', function () {
       var form = formstream();
-      form.file('foo', './logo.png', 'bar').should.equal(form);
+      form.file('foo', path.join(root, 'logo.png'), 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .buffer()', function () {

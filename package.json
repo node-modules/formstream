@@ -34,13 +34,13 @@
   "devDependencies": {
     "autod": "*",
     "connect-multiparty": "1",
-    "express": "4",
+    "express": "^4.16.4",
     "istanbul": "*",
-    "mocha": "*",
+    "mocha": "3",
     "pedding": "1",
     "should": "4",
     "urllib": "2"
   },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
+  "author": "fengmk2 <fengmk2@gmail.com> (https://fengmk2.com)",
   "license": "MIT"
 }
