@@ -1,5 +1,8 @@
 'use strict';
 
+const Os = require('os');
+Os.tmpDir = Os.tmpDir || Os.tmpdir;
+
 var pedding = require('pedding');
 var Stream = require('stream');
 var http = require('http');
