@@ -99,6 +99,24 @@ describe('formstream.test.js', function () {
     });
   });
 
+  it('should get right mime with emf file', function (done) {
+    done = pedding(2, done);
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.file('file', path.join(root, 'test.emf'));
+    form.on('destroy', done);
+    post(port, '/post', form, function (err, data) {
+      data.headers.should.not.have.property('content-length');
+      data.headers.should.have.property('content-type')
+        .with.equal('multipart/form-data; boundary=' + form._boundary);
+      var files = data.files;
+      files.should.have.property('file');
+      files.file.filename.should.equal('test.emf');
+      files.file.mime.should.equal('image/emf');
+      done(err);
+    });
+  });
+
   it.skip('should upload a stream without size, use "Transfer-Encoding: chunked"', function (done) {
     var ChunkedStream = require('../../chunked');
     var form = formstream();
