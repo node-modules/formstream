@@ -1,8 +1,10 @@
-sudo: false
 language: node_js
 node_js:
   - '4'
   - '6'
   - '8'
   - '10'
+  - '12'
+  - '14'
+  - '16'
 script: npm run test-travis
