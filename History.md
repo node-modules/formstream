@@ -1,4 +1,13 @@
 
+1.1.1 / 2021-04-28
+==================
+
+**fixes**
+  * [[`c96ba5b`](http://github.com/node-modules/formstream/commit/c96ba5bace0e96bf39770769e43d9de4271971d8)] - fix: upgrade mime to fix wrong mime type (#19) (shaozj <<shaozj@users.noreply.github.com>>)
+
+**others**
+  * [[`21918e5`](http://github.com/node-modules/formstream/commit/21918e5fc37a4cea5aae82659d39587f099e805b)] - chore: upgrade devDeps express to latest version (#15) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.1.0 / 2016-12-19
 ==================
 

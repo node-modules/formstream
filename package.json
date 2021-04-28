@@ -1,6 +1,6 @@
 {
   "name": "formstream",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A multipart/form-data encoded stream, helper for file upload.",
   "main": "lib/formstream.js",
   "files": [
