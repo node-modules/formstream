@@ -1,5 +1,8 @@
 'use strict';
 
+const Os = require('os');
+Os.tmpDir = Os.tmpDir || Os.tmpdir;
+
 var pedding = require('pedding');
 var Stream = require('stream');
 var http = require('http');
@@ -181,12 +184,14 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file with wrong stream size will return error', function (done) {
+    done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename);
     form.setTotalStreamSize(100);
+    form.on('destroy', done);
     post(port, '/post', form, function (err) {
       should.exist(err);
       done();
@@ -194,11 +199,13 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file with wrong size will return error', function (done) {
+    done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename, 100);
+    form.on('destroy', done);
     post(port, '/post', form, function (err) {
       should.exist(err);
       done();
@@ -456,6 +463,24 @@ describe('formstream.test.js', function () {
     it('should do chaining calls with .setTotalStreamSize()', function () {
       var form = formstream();
       form.setTotalStreamSize(10).should.equal(form);
+    });
+  });
+
+  it('should get right mime with emf file', function (done) {
+    done = pedding(2, done);
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.file('file', path.join(root, 'test.emf'));
+    form.on('destroy', done);
+    post(port, '/post', form, function (err, data) {
+      data.headers.should.not.have.property('content-length');
+      data.headers.should.have.property('content-type')
+        .with.equal('multipart/form-data; boundary=' + form._boundary);
+      var files = data.files;
+      files.should.have.property('file');
+      files.file.filename.should.equal('test.emf');
+      files.file.mime.should.equal('image/emf');
+      done(err);
     });
   });
 
