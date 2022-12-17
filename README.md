@@ -1,19 +1,13 @@
 # formstream
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/formstream.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/formstream
-[travis-image]: https://img.shields.io/travis/node-modules/formstream.svg?style=flat-square
-[travis-url]: https://travis-ci.org/node-modules/formstream
 [coveralls-image]: https://img.shields.io/coveralls/node-modules/formstream.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/node-modules/formstream?branch=master
-[david-image]: https://img.shields.io/david/node-modules/formstream.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/formstream
 [download-image]: https://img.shields.io/npm/dm/formstream.svg?style=flat-square
 [download-url]: https://npmjs.org/package/formstream
 
