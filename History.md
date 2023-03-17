@@ -1,4 +1,14 @@
 
+1.2.0 / 2023-03-17
+==================
+
+**features**
+  * [[`f268e86`](http://github.com/node-modules/formstream/commit/f268e86e6b55d5b981bb7daf9c8662bdcd820f5c)] - feat: Porting from new Buffer() to Buffer.from() (#22) (Matthew Speiser <<mattrspeiser@gmail.com>>)
+
+**others**
+  * [[`3c09f70`](http://github.com/node-modules/formstream/commit/3c09f700b2440b8f391650c939d91c2d5e4ae9b3)] - test: run on github action (#21) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`2d5ed81`](http://github.com/node-modules/formstream/commit/2d5ed81e95b4fde270b5db2720fff0e19effd2dc)] - test: run test on node 12, 14, 16 (#20) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.1.1 / 2021-04-28
 ==================
 
