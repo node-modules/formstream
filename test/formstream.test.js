@@ -338,9 +338,9 @@ describe('formstream.test.js', function () {
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
-      var buffer = new Buffer('foo content');
+      var buffer = Buffer.from('foo content');
       form.buffer('file', buffer, 'foo.txt');
-      var bar = new Buffer('bar content中文');
+      var bar = Buffer.from('bar content中文');
       form.buffer('bar', bar, 'bar.js');
       var logopath = path.join(root, 'logo.png');
       form.file('logo', logopath);
@@ -375,7 +375,7 @@ describe('formstream.test.js', function () {
       form.field('foo', 'bar');
       form.field('name', '中文名字');
       form.field('pwd', '哈哈pwd');
-      var buffer = new Buffer('file content');
+      var buffer = Buffer.from('file content');
       form.buffer('file', buffer, 'foo.txt');
       var logopath = path.join(root, 'logo.png');
       form.file('logo', logopath);
@@ -417,7 +417,7 @@ describe('formstream.test.js', function () {
       var headers1 = formstream()
         .field('field', 'plain')
         .file('file', path.join(root, 'logo.png'), 'file')
-        .buffer('buffer', new Buffer(20), 'buffer')
+        .buffer('buffer', Buffer.alloc(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream')
         .setTotalStreamSize(10)
         .headers();
@@ -425,7 +425,7 @@ describe('formstream.test.js', function () {
       var headers2 = formstream()
         .field('field', 'plain')
         .file('file', path.join(root, 'logo.png'), 'file', 10)
-        .buffer('buffer', new Buffer(20), 'buffer')
+        .buffer('buffer', Buffer.alloc(20), 'buffer')
         .stream('stream', cunterStream('stream', 5), 'stream', 30)
         .headers();
 
@@ -452,7 +452,7 @@ describe('formstream.test.js', function () {
 
     it('should do chaining calls with .buffer()', function () {
       var form = formstream();
-      form.buffer('foo', new Buffer('foo content'), 'bar').should.equal(form);
+      form.buffer('foo', Buffer.from('foo content'), 'bar').should.equal(form);
     });
 
     it('should do chaining calls with .stream()', function () {
