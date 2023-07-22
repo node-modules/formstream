@@ -3,8 +3,10 @@
   "version": "1.2.0",
   "description": "A multipart/form-data encoded stream, helper for file upload.",
   "main": "lib/formstream.js",
+  "types": "types/formstream.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "types/formstream.d.ts"
   ],
   "scripts": {
     "test": "egg-bin test",
@@ -31,6 +33,7 @@
     "pause-stream": "~0.0.11"
   },
   "devDependencies": {
+    "@types/node": "^20.4.3",
     "connect-multiparty": "1",
     "egg-bin": "^5.6.1",
     "express": "^4.16.4",
