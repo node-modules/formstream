@@ -11,8 +11,9 @@
   "scripts": {
     "test": "egg-bin test",
     "cov": "egg-bin cov",
-    "ci": "npm run lint && npm run cov",
-    "lint": "jshint ."
+    "ci": "npm run lint && npm run tsd && npm run cov",
+    "lint": "jshint .",
+    "tsd": "tsd"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "jshint": "^2.13.6",
     "pedding": "1",
     "should": "4",
+    "tsd": "^0.28.1",
     "urllib": "2"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
