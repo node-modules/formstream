@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/node-modules/formstream/compare/v1.3.0...v1.3.1) (2023-07-28)
+
+
+### Bug Fixes
+
+* **types:** allow `formStream` to be used as a type ([#24](https://github.com/node-modules/formstream/issues/24)) ([e1d2c00](https://github.com/node-modules/formstream/commit/e1d2c0036647847b306e87e520341f0499e82b83))
+
 ## [1.3.0](https://github.com/node-modules/formstream/compare/v1.2.0...v1.3.0) (2023-07-27)
 
 
