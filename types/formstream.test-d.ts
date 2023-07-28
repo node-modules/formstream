@@ -1,8 +1,14 @@
-import formStream from '..'
 import { Readable } from 'stream'
+import formStream from '..'
 
 const fs = formStream()
+const fs2: formStream = formStream()
 const fsNew = new formStream()
+const fsNew2: formStream = new formStream()
+
+if (window instanceof formStream) {
+  window.stream('file', Readable.from('1'), '1.txt')
+}
 
 // @ts-expect-error
 fs.field('id')

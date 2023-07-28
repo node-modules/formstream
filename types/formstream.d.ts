@@ -69,4 +69,6 @@ declare const formStream: {
   (): FormStream
 }
 
+interface formStream extends FormStream {}
+
 export = formStream
