@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/node-modules/formstream/compare/v1.3.1...v1.4.0) (2024-05-14)
+
+
+### Features
+
+* allow to set mimeType on field data ([#25](https://github.com/node-modules/formstream/issues/25)) ([f3338f8](https://github.com/node-modules/formstream/commit/f3338f8acceffdfea50000209fc88bae9779ca54))
+
 ## [1.3.1](https://github.com/node-modules/formstream/compare/v1.3.0...v1.3.1) (2023-07-28)
 
 
