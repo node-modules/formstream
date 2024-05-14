@@ -13,7 +13,8 @@
     "cov": "egg-bin cov",
     "ci": "npm run lint && npm run tsd && npm run cov",
     "lint": "jshint .",
-    "tsd": "tsd"
+    "tsd": "tsd",
+    "contributor": "git-contributor"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "connect-multiparty": "1",
     "egg-bin": "^5.6.1",
     "express": "^4.16.4",
+    "git-contributor": "^2.1.5",
     "jshint": "^2.13.6",
     "pedding": "1",
     "should": "4",

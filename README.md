@@ -1,13 +1,10 @@
 # formstream
 
 [![NPM version][npm-image]][npm-url]
-[![Test coverage][coveralls-image]][coveralls-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/formstream.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/formstream
-[coveralls-image]: https://img.shields.io/coveralls/node-modules/formstream.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/node-modules/formstream?branch=master
 [download-image]: https://img.shields.io/npm/dm/formstream.svg?style=flat-square
 [download-url]: https://npmjs.org/package/formstream
 
@@ -178,7 +175,7 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 
 (The MIT License)
 
-Copyright (c) 2012 - 2014 fengmk2 &lt;fengmk2@gmail.com&gt;
+Copyright (c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
 Copyright(c) node-modules and other contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -199,3 +196,14 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/288288?v=4" width="100px;"/><br/><sub><b>xingrz</b></sub>](https://github.com/xingrz)<br/>|[<img src="https://avatars.githubusercontent.com/u/32174276?v=4" width="100px;"/><br/><sub><b>semantic-release-bot</b></sub>](https://github.com/semantic-release-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/13151189?v=4" width="100px;"/><br/><sub><b>fjc0k</b></sub>](https://github.com/fjc0k)<br/>|[<img src="https://avatars.githubusercontent.com/u/18096247?v=4" width="100px;"/><br/><sub><b>mrspeiser</b></sub>](https://github.com/mrspeiser)<br/>|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+[<img src="https://avatars.githubusercontent.com/u/7326406?v=4" width="100px;"/><br/><sub><b>shaozj</b></sub>](https://github.com/shaozj)<br/>
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Wed May 15 2024 00:34:12 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->

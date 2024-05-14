@@ -81,12 +81,14 @@ describe('formstream.test.js', function () {
     done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
+    form.field('data', JSON.stringify({ foo: 'bar' }), 'application/json');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
       should.not.exist(err);
       data.body.should.eql({
+        data: '{"foo":"bar"}',
         foo: 'bar',
         name: '中文名字',
         pwd: '哈哈pwd'

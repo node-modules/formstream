@@ -7,7 +7,7 @@ declare class FormStream extends Stream {
    * @param name Name of field
    * @param value Value of field
    */
-  field(name: string, value: string): this
+  field(name: string, value: string, contentType?: string): this
 
   /**
    * Add a local file to be uploaded to the form.
