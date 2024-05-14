@@ -16,6 +16,7 @@ fs.field('id')
 // @ts-expect-error
 fs.field('id', 1)
 fs.field('id', '1')
+fs.field('data', '{"foo":"bar"}', 'application/json')
 
 // @ts-expect-error
 fs.file('avatar')
