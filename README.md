@@ -1,10 +1,14 @@
 # formstream
 
 [![NPM version][npm-image]][npm-url]
+[![CI](https://github.com/node-modules/formstream/actions/workflows/ci.yml/badge.svg)](https://github.com/node-modules/formstream/actions/workflows/ci.yml)
+[![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/formstream.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/formstream
+[codecov-image]: https://codecov.io/github/node-modules/formstream/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/github/node-modules/formstream?branch=master
 [download-image]: https://img.shields.io/npm/dm/formstream.svg?style=flat-square
 [download-url]: https://npmjs.org/package/formstream
 
@@ -13,7 +17,7 @@ A [multipart/form-data](http://tools.ietf.org/html/rfc2388) encoded stream, help
 ## Install
 
 ```bash
-$ npm install formstream
+npm install formstream
 ```
 
 ## Quick Start
@@ -58,18 +62,43 @@ var formstream = require('formstream');
 
 var filepath = './logo.png';
 fs.stat(filepath, function (err, stat) {
-  formstream().field('status', 'share picture')
-      .field('access_token', 'your access token')
-      .file('pic', filepath, 'logo.png', stat.size)
-      .pipe(process.stdout); // your request stream
+  formstream()
+    .field('status', 'share picture')
+    .field('access_token', 'your access token')
+    .file('pic', filepath, 'logo.png', stat.size)
+    .pipe(process.stdout); // your request stream
+});
+```
+
+### Set min chunk buffer size
+
+Some web servers have a limit on the number of chunks, and you can set `minChunkSize` to ensure the size of chunk sent to the server.
+
+```js
+var fs = require('fs');
+var FormStream = require('formstream');
+
+var filepath = './big-file.zip';
+fs.stat(filepath, function (err, stat) {
+  new FormStream({
+    // send >= 2MB chunk buffer size to the server
+    minChunkSize: 1024 * 1024 * 2,
+  }).field('status', 'share file')
+    .field('access_token', 'your access token')
+    .file('file', filepath, 'big-file.zip', stat.size)
+    .pipe(process.stdout); // your request stream
 });
 ```
 
 ## API Doc
 
-### formstream()
+### formstream([options])
 
 Create a form instance.
+
+#### Arguments
+
+- **options.minChunkSize** Number - min chunk size to emit data event
 
 #### Returns
 
@@ -140,7 +169,7 @@ Get headers for the request.
 
 #### Arguments
 
-- ***headers*** Object - Additional headers
+- **headers** Object - Additional headers
 
 #### Example
 
@@ -173,29 +202,8 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 
 ## License
 
-(The MIT License)
+[MIT](LICENSE)
 
-Copyright (c) 2012 - 2014 fengmk2 <fengmk2@gmail.com>
-Copyright(c) node-modules and other contributors.
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- GITCONTRIBUTOR_START -->
 
 ## Contributors

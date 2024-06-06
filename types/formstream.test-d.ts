@@ -5,6 +5,12 @@ const fs = formStream()
 const fs2: formStream = formStream()
 const fsNew = new formStream()
 const fsNew2: formStream = new formStream()
+new formStream({
+  minChunkSize: 100,
+});
+formStream({
+  minChunkSize: 100,
+});
 
 // instanceof ok
 if (process instanceof formStream) {

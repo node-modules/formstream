@@ -64,9 +64,14 @@ declare class FormStream extends Stream {
   headers(additionalHeaders?: Record<string, any>): Record<string, any>
 }
 
+interface FormStreamOptions {
+  /** min chunk size to emit data event */
+  minChunkSize?: number;
+}
+
 declare const formStream: {
-  new (): FormStream
-  (): FormStream
+  new (options?: FormStreamOptions): FormStream
+  (options?: FormStreamOptions): FormStream
 }
 
 interface formStream extends FormStream {}
