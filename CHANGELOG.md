@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/node-modules/formstream/compare/v1.4.0...v1.5.0) (2024-06-06)
+
+
+### Features
+
+* support minChunkSize options ([#26](https://github.com/node-modules/formstream/issues/26)) ([7d1166e](https://github.com/node-modules/formstream/commit/7d1166e3a9f0504faa5466202f3ef2a9fc0b6991))
+
 ## [1.4.0](https://github.com/node-modules/formstream/compare/v1.3.1...v1.4.0) (2024-05-14)
 
 
