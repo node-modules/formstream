@@ -267,7 +267,7 @@ describe('formstream.test.js', function () {
     });
   });
 
-  it.only('should work on minChunkSize = 70000', function (done) {
+  it('should work on minChunkSize = 70000', function (done) {
     var form = formstream({
       minChunkSize: 70000,
     });

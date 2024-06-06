@@ -11,7 +11,7 @@
   "scripts": {
     "test": "egg-bin test",
     "cov": "egg-bin cov",
-    "ci": "npm run lint && npm run tsd && npm run cov",
+    "ci": "npm run lint && npm run tsd && npm run cov && NODE_DEBUG=formstream npm run cov",
     "lint": "jshint .",
     "tsd": "tsd",
     "contributor": "git-contributor"
