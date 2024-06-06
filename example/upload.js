@@ -3,11 +3,13 @@
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
-var formstream = require('../');
+var formstream = require('..');
 
-var imagepath = path.join(path.dirname(__dirname), 'logo.png');
+var imagepath = path.join(path.dirname(__dirname), 'test/fixtures/logo.png');
 
-var form = formstream();
+var form = formstream({
+  // minChunkSize: 1024 * 1024,
+});
 // form.file('file', filepath, filename);
 form.stream('file', fs.createReadStream(imagepath), 'logo.png');
 form.field('foo', 'hello world');

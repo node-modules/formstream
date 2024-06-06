@@ -82,7 +82,7 @@ describe('formstream.test.js', function () {
     var form = formstream();
     form.field('foo', 'bar');
     form.field('data', JSON.stringify({ foo: 'bar' }), 'application/json');
-    form.field('name', '中文名字');
+    form.field('name', '中文名字😄👿收到回复都好舒服的emoji也支持🥥');
     form.field('pwd', '哈哈pwd');
     form.on('destroy', done);
     post(port, '/post', form, function (err, data) {
@@ -90,7 +90,7 @@ describe('formstream.test.js', function () {
       data.body.should.eql({
         data: '{"foo":"bar"}',
         foo: 'bar',
-        name: '中文名字',
+        name: '中文名字😄👿收到回复都好舒服的emoji也支持🥥',
         pwd: '哈哈pwd'
       });
       data.headers.should.have.property('content-length', String(form._contentLength));
@@ -186,17 +186,15 @@ describe('formstream.test.js', function () {
   });
 
   it('should post fields and file with wrong stream size will return error', function (done) {
-    done = pedding(2, done);
     var form = formstream();
     form.field('foo', 'bar');
     form.field('name', '中文名字');
     form.field('pwd', '哈哈pwd');
     form.file('file', __filename);
     form.setTotalStreamSize(100);
-    form.on('destroy', done);
+    form.once('destroy', done);
     post(port, '/post', form, function (err) {
       should.exist(err);
-      done();
     });
   });
 
@@ -214,23 +212,21 @@ describe('formstream.test.js', function () {
     });
   });
 
-  if (process.version.indexOf('v0.8.') !== 0) {
-    // node 0.8, createSteram not exists file will throw error
-    it('should post not exist file return error ENOENT', function (done) {
-      var form = formstream();
-      form.field('foo', 'bar');
-      form.field('name', '中文名字');
-      form.field('pwd', '哈哈pwd');
-      form.file('file', __filename + 'notexists');
-      form.setTotalStreamSize(100);
-      post(port, '/post', form, function (err) {
-        should.exist(err);
-        err.message.should.containEql('formstream/test/formstream.test.jsnotexists');
-        err.message.should.containEql('ENOENT');
-        done();
-      });
+  // node 0.8, createSteram not exists file will throw error
+  it('should post not exist file return error ENOENT', function (done) {
+    var form = formstream();
+    form.field('foo', 'bar');
+    form.field('name', '中文名字');
+    form.field('pwd', '哈哈pwd');
+    form.file('file', __filename + 'notexists');
+    form.setTotalStreamSize(100);
+    post(port, '/post', form, function (err) {
+      should.exist(err);
+      err.message.should.containEql('formstream/test/formstream.test.jsnotexists');
+      err.message.should.containEql('ENOENT');
+      done();
     });
-  }
+  });
 
   it('should post fields and stream', function (done) {
     var form = formstream();
@@ -267,6 +263,48 @@ describe('formstream.test.js', function () {
       files.file.filename.should.equal('formstream.test.js');
       files.file.size.should.equal(fs.statSync(__filename).size);
       files.file.mime.should.equal('application/javascript');
+      done(err);
+    });
+  });
+
+  it.only('should work on minChunkSize = 70000', function (done) {
+    var form = formstream({
+      minChunkSize: 70000,
+    });
+    var s1 = cunterStream('no1', 5);
+    form.stream('stream1', s1, 'stream1中文名.txt', 'text/html');
+    var s2 = cunterStream('no2', 3);
+    form.stream('stream2', s2, 'stream2.png');
+    form.field('foo', 'bar');
+    form.field('name', '中文名字');
+    form.field('pwd', '哈哈pwd');
+    const tgzFile = path.join(__dirname, 'fixtures/formstream.tgz');
+    form.file('file', tgzFile, 'foo.tar.gz');
+
+    post(port, '/post', form, function (err, data) {
+      data.body.should.eql({
+        foo: 'bar',
+        name: '中文名字',
+        pwd: '哈哈pwd'
+      });
+      data.headers.should.have.property('content-type')
+        .with.match(/multipart\/form-data; boundary=--------------------------\d{24}/);
+      var files = data.files;
+      files.should.have.keys('stream1', 'stream2', 'file');
+      var stream1 = files.stream1;
+      var stream2 = files.stream2;
+      stream1.filename.should.equal('stream1中文名.txt');
+      stream1.size.should.equal(stream1.size);
+      stream1.mime.should.equal('text/html');
+
+      stream2.filename.should.equal('stream2.png');
+      stream2.size.should.equal(stream2.size);
+      stream2.mime.should.equal('image/png');
+
+      files.should.have.property('file');
+      files.file.filename.should.equal('foo.tar.gz');
+      files.file.size.should.equal(fs.statSync(tgzFile).size);
+      files.file.mime.should.equal('application/gzip');
       done(err);
     });
   });
