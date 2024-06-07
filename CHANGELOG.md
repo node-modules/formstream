@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/node-modules/formstream/compare/v1.5.0...v1.5.1) (2024-06-07)
+
+
+### Bug Fixes
+
+* only print top 512 bytes on buffer field debug log ([#27](https://github.com/node-modules/formstream/issues/27)) ([9f771e8](https://github.com/node-modules/formstream/commit/9f771e8d34dce4f5f5f6015b17397909c5d65623))
+
 ## [1.5.0](https://github.com/node-modules/formstream/compare/v1.4.0...v1.5.0) (2024-06-06)
 
 
