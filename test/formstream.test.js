@@ -246,7 +246,7 @@ describe('formstream.test.js', function () {
         pwd: '哈哈pwd'
       });
       data.headers.should.have.property('content-type')
-        .with.match(/multipart\/form-data; boundary=--------------------------\d{24}/);
+        .with.match(/multipart\/form-data; boundary=--------------------------\w{24}/);
       var files = data.files;
       files.should.have.keys('stream1', 'stream2', 'file');
       var stream1 = files.stream1;
@@ -288,7 +288,7 @@ describe('formstream.test.js', function () {
         pwd: '哈哈pwd'
       });
       data.headers.should.have.property('content-type')
-        .with.match(/multipart\/form-data; boundary=--------------------------\d{24}/);
+        .with.match(/multipart\/form-data; boundary=--------------------------\w{24}/);
       var files = data.files;
       files.should.have.keys('stream1', 'stream2', 'file');
       var stream1 = files.stream1;
@@ -323,7 +323,7 @@ describe('formstream.test.js', function () {
         pwd: '哈哈pwd'
       });
       data.headers.should.have.property('content-type')
-        .with.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/);
+        .with.match(/^multipart\/form-data; boundary=--------------------------\w{24}$/);
       var files = data.files;
       files.should.have.keys('file', 'logo');
       files.file.filename.should.equal('formstream.test.js');
@@ -351,7 +351,7 @@ describe('formstream.test.js', function () {
         });
         data.headers.should.have.property('content-length').with.equal(form._contentLength + '');
         data.headers.should.have.property('content-type')
-          .with.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/);
+          .with.match(/^multipart\/form-data; boundary=--------------------------\w{24}$/);
         var files = data.files;
         files.should.have.keys('file', 'logo');
         files.file.filename.should.equal('formstream.test.js');
@@ -448,7 +448,7 @@ describe('formstream.test.js', function () {
       form.field('foo', 'bar');
       var headers = form.headers({ 'X-Test': 'hello' });
       headers.should.have.keys('Content-Type', 'Content-Length', 'X-Test');
-      headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\d{24}$/);
+      headers['Content-Type'].should.match(/^multipart\/form-data; boundary=--------------------------\w{24}$/);
       headers['X-Test'].should.equal('hello');
       headers['Content-Length'].should.equal('161');
     });

@@ -204,14 +204,8 @@ See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) 
 
 [MIT](LICENSE)
 
-<!-- GITCONTRIBUTOR_START -->
-
 ## Contributors
 
-|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/288288?v=4" width="100px;"/><br/><sub><b>xingrz</b></sub>](https://github.com/xingrz)<br/>|[<img src="https://avatars.githubusercontent.com/u/32174276?v=4" width="100px;"/><br/><sub><b>semantic-release-bot</b></sub>](https://github.com/semantic-release-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/13151189?v=4" width="100px;"/><br/><sub><b>fjc0k</b></sub>](https://github.com/fjc0k)<br/>|[<img src="https://avatars.githubusercontent.com/u/18096247?v=4" width="100px;"/><br/><sub><b>mrspeiser</b></sub>](https://github.com/mrspeiser)<br/>|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|
-| :---: | :---: | :---: | :---: | :---: | :---: |
-[<img src="https://avatars.githubusercontent.com/u/7326406?v=4" width="100px;"/><br/><sub><b>shaozj</b></sub>](https://github.com/shaozj)<br/>
+[![Contributors](https://contrib.rocks/image?repo=node-modules/formstream)](https://github.com/node-modules/formstream/graphs/contributors)
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Wed May 15 2024 00:34:12 GMT+0800`.
-
-<!-- GITCONTRIBUTOR_END -->
+Made with [contributors-img](https://contrib.rocks).
