@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/node-modules/formstream/compare/v1.5.1...v1.5.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* switch to using crypto random for boundary values ([#28](https://github.com/node-modules/formstream/issues/28)) ([ace05e0](https://github.com/node-modules/formstream/commit/ace05e0b5ab85d2f8e6d654f46633924a957b636))
+
 ## [1.5.1](https://github.com/node-modules/formstream/compare/v1.5.0...v1.5.1) (2024-06-07)
 
 
