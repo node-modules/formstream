@@ -5,6 +5,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  merge_group:
 
 jobs:
   Job:
@@ -12,6 +13,6 @@ jobs:
     uses: node-modules/github-actions/.github/workflows/node-test.yml@master
     with:
       os: 'ubuntu-latest, macos-latest'
-      version: '14, 16, 18, 20, 22'
+      version: '14, 16, 18, 20, 22, 24'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
