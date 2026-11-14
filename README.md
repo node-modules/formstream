@@ -207,6 +207,33 @@ Emitted when the stream has received no more 'data' events will happen.
 
 See [Node.js Documentation](http://nodejs.org/api/stream.html#stream_event_end) for more.
 
+## Releasing
+
+Maintainers prepare releases through a pull request that updates the version in
+`package.json` and describes the changes in `CHANGELOG.md`. To update the version
+without creating a commit or tag, run `npm version patch --no-git-tag-version`
+(or use `minor`, `major`, or an explicit version).
+
+After the PR merges into `master`, `release.yml` compares the package versions
+before and after the push. It publishes only when the version changes. The
+workflow skips versions already on npm, runs the project checks, and publishes
+with npm trusted publishing and provenance. Stable versions use the `latest`
+dist-tag; prerelease versions use `next`. To retry a failed release, rerun the
+failed workflow in GitHub Actions.
+
+Configure the `formstream` package's trusted publisher on npm with these values:
+
+- Provider: GitHub Actions
+- Organization: `node-modules`
+- Repository: `formstream`
+- Workflow filename: `release.yml`
+- Environment: leave empty
+- Allow direct publishing with `npm publish`
+
+The workflow uses OIDC and does not require an `NPM_TOKEN` or `GIT_TOKEN` secret.
+See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/)
+for package configuration instructions.
+
 ## License
 
 [MIT](LICENSE)

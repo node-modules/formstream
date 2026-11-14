@@ -4,14 +4,89 @@ on:
   push:
     branches: [ master ]
 
+permissions:
+  contents: read
+
 jobs:
+  version:
+    name: Check version change
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.version.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Compare package versions
+        id: version
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const previous = JSON.parse(execFileSync('git', [
+            'show', `${process.env.BEFORE_SHA}:package.json`,
+          ], { encoding: 'utf8' }));
+          const current = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          if (typeof previous.version !== 'string' || typeof current.version !== 'string') {
+            throw new Error('Both package versions must be strings');
+          }
+          const changed = previous.version !== current.version;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `changed=${changed}\n`);
+          console.log(`Package version: ${previous.version} -> ${current.version}`);
+          NODE
+
   release:
-    name: Node.js
+    name: Publish to npm
+    needs: version
+    if: needs.version.outputs.changed == 'true'
+    runs-on: ubuntu-latest
     permissions:
-      contents: write
-      deployments: write
+      contents: read
       id-token: write
-    uses: node-modules/github-actions/.github/workflows/node-release.yml@master
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    concurrency:
+      group: npm-publish-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11
+      - name: Check whether the version is already published
+        id: registry
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const { name, version } = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const versions = JSON.parse(execFileSync('npm', [
+            'view', name, 'versions', '--json', '--registry=https://registry.npmjs.org',
+          ], { encoding: 'utf8' }));
+          const published = [].concat(versions).includes(version);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `published=${published}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${version.includes('-') ? 'next' : 'latest'}\n`);
+          console.log(`${name}@${version}: ${published ? 'already published, skipping' : 'ready to publish'}`);
+          NODE
+      - name: Install dependencies
+        if: steps.registry.outputs.published == 'false'
+        run: npm install --no-package-lock --no-fund
+      - name: Run checks
+        if: steps.registry.outputs.published == 'false'
+        run: npm run ci
+      - name: Publish with npm trusted publishing
+        if: steps.registry.outputs.published == 'false'
+        env:
+          RELEASE_TAG: ${{ steps.registry.outputs.tag }}
+        run: npm publish --provenance --access public --tag "$RELEASE_TAG"
