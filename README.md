@@ -218,8 +218,14 @@ After the PR merges into `master`, `release.yml` compares the package versions
 before and after the push. It publishes only when the version changes. The
 workflow skips versions already on npm, runs the project checks, and publishes
 with npm trusted publishing and provenance. Stable versions use the `latest`
-dist-tag; prerelease versions use `next`. To retry a failed release, rerun the
-failed workflow in GitHub Actions.
+dist-tag; prerelease versions use `next`.
+
+After npm publishing succeeds, the workflow creates a GitHub release with a
+`v<version>` tag at the commit that triggered the workflow and automatically
+generated release notes. Prerelease versions are marked as GitHub prereleases.
+To retry a failed release, rerun the failed workflow in GitHub Actions. If the
+version is already on npm, the workflow still creates the missing GitHub release.
+Existing GitHub releases remain unchanged.
 
 Configure the `formstream` package's trusted publisher on npm with these values:
 

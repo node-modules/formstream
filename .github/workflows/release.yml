@@ -43,12 +43,12 @@ jobs:
           NODE
 
   release:
-    name: Publish to npm
+    name: Publish to npm and GitHub
     needs: version
     if: needs.version.outputs.changed == 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     concurrency:
       group: npm-publish-${{ github.ref }}
@@ -90,3 +90,21 @@ jobs:
         env:
           RELEASE_TAG: ${{ steps.registry.outputs.tag }}
         run: npm publish --provenance --access public --tag "$RELEASE_TAG"
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          tag="v$version"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/releases" \
+            --jq '.[].tag_name' > "$RUNNER_TEMP/release-tags.txt"
+          if grep -Fxq -- "$tag" "$RUNNER_TEMP/release-tags.txt"; then
+            echo "GitHub release $tag already exists, skipping"
+            exit 0
+          fi
+          args=("$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA"
+            --title "$tag" --generate-notes)
+          if [[ "$version" == *-* ]]; then
+            args+=(--prerelease)
+          fi
+          gh release create "${args[@]}"
