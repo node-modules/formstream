@@ -77,6 +77,48 @@ describe('formstream.test.js', function () {
     });
   });
 
+  it('should keep an injected field name in one multipart parameter', function (done) {
+    var form = formstream();
+    form.field('public"; name="is_admin\r\nX-Injected: true', 'true');
+    post(port, '/post', form, function (err, data) {
+      should.not.exist(err);
+      data.body.should.eql({
+        'public%22; name=%22is_admin%0D%0AX-Injected: true': 'true'
+      });
+      data.files.should.eql({});
+      done();
+    });
+  });
+
+  it('should preserve the field name with an injected filename', function (done) {
+    var form = formstream();
+    form.buffer('public', Buffer.from('true'),
+      'file.txt"; name="is_admin\r\nX-Injected: true', 'text/plain');
+    post(port, '/post', form, function (err, data) {
+      should.not.exist(err);
+      data.body.should.eql({});
+      data.files.should.have.keys('public');
+      data.files.public.size.should.equal(4);
+      data.files.public.mime.should.equal('text/plain');
+      done();
+    });
+  });
+
+  it('should preserve the field name after rejecting an injected MIME type', function (done) {
+    var form = formstream();
+    (function () {
+      form.field('public', 'true',
+        'text/plain\r\nContent-Disposition: form-data; name="is_admin"\r\nContent-Type:');
+    }).should.throw('MIME type must not contain CR or LF');
+    form.field('public', 'true');
+    post(port, '/post', form, function (err, data) {
+      should.not.exist(err);
+      data.body.should.eql({ public: 'true' });
+      data.files.should.eql({});
+      done();
+    });
+  });
+
   it('should post fields only with content-length', function (done) {
     done = pedding(2, done);
     var form = formstream();

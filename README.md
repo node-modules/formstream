@@ -92,6 +92,12 @@ fs.stat(filepath, function (err, stat) {
 
 ## API Doc
 
+Field names and filenames use percent encoding for carriage returns (`%0D`),
+line feeds (`%0A`), and double quotes (`%22`) in multipart headers.
+Other characters and field contents remain unchanged.
+The `field()`, `buffer()`, and `stream()` methods throw a `TypeError` synchronously
+if a supplied MIME type contains a carriage return or line feed.
+
 ### formstream([options])
 
 Create a form instance.
@@ -104,7 +110,7 @@ Create a form instance.
 
 Form - form instance
 
-### FormStream#field(name, value)
+### FormStream#field(name, value[, mimeType])
 
 Add a normal field to the form.
 
@@ -112,6 +118,7 @@ Add a normal field to the form.
 
 - **name** String - Name of field
 - **value** String - Value of field
+- ***mimeType*** String - Optional. Content-Type of the field
 
 #### Returns
 
