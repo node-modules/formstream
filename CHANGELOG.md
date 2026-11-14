@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.3](https://github.com/node-modules/formstream/compare/v1.5.2...v1.5.3) (2026-11-14)
+
+### Bug Fixes
+
+* Prevent multipart part header injection by encoding CR, LF, and double quotes in field names and filenames. MIME types containing CR or LF now throw a synchronous `TypeError` ([#29](https://github.com/node-modules/formstream/pull/29)) ([d707e15](https://github.com/node-modules/formstream/commit/d707e15da9880ab925acd9c00032b789ad0244e8)).
+
 ## [1.5.2](https://github.com/node-modules/formstream/compare/v1.5.1...v1.5.2) (2025-07-29)
 
 
